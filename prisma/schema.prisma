@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String       @id @default(uuid())
+  name       String
+  username   String       @unique
+  password   String?
+  role       String?
+  group      String?
+  provider   String
+  tickets    Ticket[]
+  worknotes  Worknotes[]
+  attachment Attachment[]
+}
+
+model Ticket {
+  id                  String       @id @default(uuid())
+  doubtId             String       @unique
+  callerName          String
+  assignmentGroup     String
+  shortDescription    String
+  detailedDescription String
+  createdAt           DateTime     @default(now())
+  status              String
+  userId              String
+  user                User         @relation(fields: [userId], references: [id])
+  worknotes           Worknotes[]
+  attachment          Attachment[]
+}
+
+model Worknotes {
+  id        String   @id @default(uuid())
+  note      String
+  createdAt DateTime @default(now())
+  ticketId  String
+  userId    String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Attachment {
+  id        String   @id @default(uuid())
+  type      String
+  url       String
+  ticketId  String
+  Ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}

@@ -2,6 +2,8 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import NextAuth from "next-auth"
+import { prisma } from "@/lib/db";
+import Provider from "@/app/Provider";
 
 const handler = NextAuth({
   providers : [
@@ -23,6 +25,17 @@ const handler = NextAuth({
       // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
       // You can also use the `req` object to obtain additional parameters
       // (i.e., the request IP address)
+      console.log("in the auth page")
+      const response = await prisma.user.create({
+        data:{
+            name : credentials?.username ?? "",
+        username : credentials?.username ?? "",
+        password : credentials?.password ?? "",
+        provider : "Credentials"
+        }
+        
+      })
+      console.log("data enter successfully")
       const res = await fetch("/your/endpoint", {
         method: 'get',
         body: JSON.stringify(credentials),

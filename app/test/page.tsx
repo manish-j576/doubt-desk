@@ -1,19 +1,14 @@
 'use client';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { counter } from '../recoil/atom';
-import RecoilProvider from '../RecoilProvider';
 
-function Output(){
-    const val = useRecoilValue(counter)
-    return <div>
-        <h1>hi tehre</h1>
-        value : {val}
-    </div>
-}
+import useCounterStore from "@/store/useStore";
 
-export default function Test() {
-  return (<RecoilProvider>
-      <Output />
-</RecoilProvider>
-  );
+export default function Test(){
+  const count = useCounterStore((state)=>state.count)
+  const increase = useCounterStore ((state)=>state.increase)
+  const decrease = useCounterStore((state)=>state.decrease)
+  return <div>
+    <h1>count  : {count } </h1>
+    <button onClick={increase}>increase</button>
+    <button onClick={decrease}>decrease</button>
+  </div>
 }
