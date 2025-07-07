@@ -56,3 +56,8 @@ model Attachment {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
+
+enum Provider {
+  Google
+  Credentials
+}
