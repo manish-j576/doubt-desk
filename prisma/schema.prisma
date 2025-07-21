@@ -10,12 +10,12 @@ datasource db {
 
 model User {
   id         String       @id @default(uuid())
-  name       String
+  Fname      String?
   username   String       @unique
   password   String?
   role       String?
   group      String?
-  provider   String
+  provider   Provider
   tickets    Ticket[]
   worknotes  Worknotes[]
   attachment Attachment[]

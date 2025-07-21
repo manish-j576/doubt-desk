@@ -35,10 +35,14 @@ export default function SignupPage() {
     const response = await axios.post(`${BACKEND_URL}/checkuser`,{
         username : username
     })
-    console.log("response")
-    console.log(response)
+    
+    const length = Object.keys(response.data).length;
+    console.log(length)
+    // returning null from the backend if it is a new user hence if the length is 0 its a new user else it is an existing user
+
+
     // For demo purposes, let's say usernames starting with 'existing' are already taken
-    if (username.toLowerCase().startsWith("existing")) {
+    if (length == 1) {
       setError("Username already exists. Please choose a different one.")
       setIsLoading(false)
       return
@@ -64,8 +68,12 @@ export default function SignupPage() {
     setError("")
 
     // Simulate account creation
-    await new Promise((resolve) => setTimeout(resolve, 1500))
 
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    const response = await axios.post(`${BACKEND_URL}/signup`,{
+      username,
+      password
+    })
     // Success - in a real app, you'd redirect to dashboard
     alert(`Account created successfully for ${username}!`)
     setIsLoading(false)
